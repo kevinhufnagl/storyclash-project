@@ -19346,7 +19346,11 @@ var _require = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.j
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
-__webpack_require__(/*! ./report */ "./resources/js/report.js");
+var _require2 = __webpack_require__(/*! ./report */ "./resources/js/report.js"),
+    getAllReports = _require2.getAllReports,
+    uploadReport = _require2.uploadReport,
+    updateReport = _require2.updateReport,
+    deleteReport = _require2.deleteReport;
 
 var reportList = document.querySelector('.js-report-list'); //Report form DOM elements
 
@@ -19354,9 +19358,9 @@ var addReportForm = document.getElementById('addReportForm');
 var formTitle = document.getElementById('title');
 var formIcon = document.getElementById('icon');
 var formIconPreview = document.getElementById('icon-preview');
-var formMessage = document.querySelector('.form-message'); //Loads all reports on page load once and calls function to add event listeners for the context menu
+var formMessage = document.querySelector('.form-message'); //Loads all reports on page load once and calls function to add event listeners for the context menu of each item
 
-window.getAllReports(function (data) {
+getAllReports(function (data) {
   reportList.innerHTML = data.html;
   updateContextMenuListeners();
 }); //Used to preview the selected report icon, not necessary but better UX
@@ -19454,7 +19458,7 @@ var updateContextMenuListeners = function updateContextMenuListeners() {
                 _method: 'put',
                 title: renameInput.value
               };
-              window.updateReport(reportId, renameData);
+              updateReport(reportId, renameData);
               renameInput.remove();
               reportTitleElem.classList.remove('hidden');
             }
@@ -19503,9 +19507,10 @@ document.getElementById('title').addEventListener('keydown', function (e) {
   } //Submit form data via ajax
   else if (e.key === "Enter") {
       var data = new FormData(addReportForm);
-      window.uploadReport(data);
+      uploadReport(data);
     }
 }); //Event Listeners for the ajax results in report.js
+//Append uploaded report to DOM
 
 document.addEventListener('reportUploadSuccess', function (e) {
   hideReportForm();
@@ -19517,14 +19522,16 @@ document.addEventListener('reportUploadSuccess', function (e) {
 });
 document.addEventListener('reportUploadFail', function (e) {
   formMessage.innerHTML = e.detail.message;
-});
+}); //Remove deleted report from DOM
+
 document.addEventListener('reportDeleteSuccess', function (e) {
   var deletedId = e.detail.data.id;
   document.querySelector(".js-report-list li[data-id=\"".concat(deletedId, "\"]")).remove();
 });
 document.addEventListener('reportDeleteFail', function (e) {
   console.log(e.detail);
-});
+}); //Change title to updated title of report in DOM
+
 document.addEventListener('reportUpdateSuccess', function (e) {
   var updatedId = e.detail.data.id; //Setting the new title we retrieved from the response
 
@@ -19572,16 +19579,22 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*!********************************!*\
   !*** ./resources/js/report.js ***!
   \********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! exports provided: getAllReports, uploadReport, updateReport, deleteReport */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAllReports", function() { return getAllReports; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "uploadReport", function() { return uploadReport; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateReport", function() { return updateReport; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteReport", function() { return deleteReport; });
 /*
     CSRF protection for ajax requests
 */
 var token = document.head.querySelector('meta[name="csrf-token"]');
 window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content; //Retrieves all reports and hands it to the callback function for use in app.js
 
-window.getAllReports = function (callback) {
+var getAllReports = function getAllReports(callback) {
   window.axios.get('/reports').then(function (res) {
     callback(res.data);
   })["catch"](function (error) {
@@ -19592,7 +19605,7 @@ window.getAllReports = function (callback) {
 
 var isUploading = false;
 
-window.uploadReport = function (data) {
+var uploadReport = function uploadReport(data) {
   if (!isUploading) {
     isUploading = true;
     window.axios({
@@ -19600,6 +19613,7 @@ window.uploadReport = function (data) {
       url: '/reports',
       data: data
     }).then(function (res) {
+      //Sending the uploaded report through the event so we can append it to the DOM in app.js
       document.dispatchEvent(new CustomEvent('reportUploadSuccess', {
         detail: res.data
       }));
@@ -19625,10 +19639,11 @@ window.uploadReport = function (data) {
 }; //Deletes a report using axios and triggers appropriate events for use in app.js
 
 
-window.deleteReport = function (reportId) {
+var deleteReport = function deleteReport(reportId) {
   window.axios.post("/reports/".concat(reportId), {
     _method: 'delete'
   }).then(function (res) {
+    //Sending the deleted report through the event so we can delete it from the DOM in app.js
     document.dispatchEvent(new CustomEvent('reportDeleteSuccess', {
       detail: res.data
     }));
@@ -19640,8 +19655,9 @@ window.deleteReport = function (reportId) {
 }; //Updates a report using axios and triggers appropriate events for use in app.js
 
 
-window.updateReport = function (reportId, data) {
+var updateReport = function updateReport(reportId, data) {
   window.axios.post("/reports/".concat(reportId), data).then(function (res) {
+    //Sending the updated data through the event caught in app.js
     document.dispatchEvent(new CustomEvent('reportUpdateSuccess', {
       detail: res.data
     }));
@@ -19651,6 +19667,8 @@ window.updateReport = function (reportId, data) {
     }));
   });
 };
+
+
 
 /***/ }),
 

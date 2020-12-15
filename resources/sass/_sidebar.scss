@@ -41,7 +41,7 @@ $report_icon_size: 32px;
         }
     }
     .sidebar__content {
-        height:100%;
+        height:100vh;
         min-width:300px;
         max-width:300px;
         border-right:1px solid $light_grey;
@@ -51,6 +51,7 @@ $report_icon_size: 32px;
         transition:transform .5s $ease_custom_1;
         padding:0 $s_1;
         overflow:scroll;
+        -webkit-overflow-scrolling: touch;
         .sidebar__content--header {
             height:$sidebar_left_size;
             width:100%;

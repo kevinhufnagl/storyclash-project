@@ -6,7 +6,7 @@ window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 
 
 //Retrieves all reports and hands it to the callback function for use in app.js
-window.getAllReports = (callback) => {
+const getAllReports = (callback) => {
     window.axios.get('/reports')
     .then(res => {
         callback(res.data);
@@ -20,7 +20,7 @@ window.getAllReports = (callback) => {
 
 //Uploads a report using axios and triggers appropriate events for use in app.js
 let isUploading = false;
-window.uploadReport = (data) => {
+const uploadReport = (data) => {
     if(!isUploading) {
         isUploading = true;
         window.axios({ 
@@ -29,6 +29,7 @@ window.uploadReport = (data) => {
             data : data, 
         }) 
         .then((res)=>{ 
+            //Sending the uploaded report through the event so we can append it to the DOM in app.js
             document.dispatchEvent(new CustomEvent('reportUploadSuccess', {detail: res.data}));
             isUploading = false;
         }) 
@@ -49,10 +50,11 @@ window.uploadReport = (data) => {
 }
 
 //Deletes a report using axios and triggers appropriate events for use in app.js
-window.deleteReport = (reportId) => {
+const deleteReport = (reportId) => {
     window.axios.post(`/reports/${reportId}`, {
         _method:'delete'
     }).then(res => {
+        //Sending the deleted report through the event so we can delete it from the DOM in app.js
         document.dispatchEvent(new CustomEvent('reportDeleteSuccess', {detail: res.data}));
     }).catch(error => {
         document.dispatchEvent(new CustomEvent('reportDeleteFail', {detail: error.response}));
@@ -60,14 +62,13 @@ window.deleteReport = (reportId) => {
 }
 
 //Updates a report using axios and triggers appropriate events for use in app.js
-window.updateReport = (reportId, data) => {
+const updateReport = (reportId, data) => {
     window.axios.post(`/reports/${reportId}`, data).then(res => {
+        //Sending the updated data through the event caught in app.js
         document.dispatchEvent(new CustomEvent('reportUpdateSuccess', {detail: res.data}));
     }).catch(error => {
         document.dispatchEvent(new CustomEvent('reportUpdateFail', {detail: error.response}));
     })
 }
 
-
-
-
+export {getAllReports, uploadReport, updateReport, deleteReport};
