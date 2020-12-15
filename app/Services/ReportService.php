@@ -43,15 +43,15 @@ class ReportService {
            throw new InvalidArgumentException($validator->errors()->first());
         }
 
+        //Check if icon has been uploaded, otherwise use default icon
         if(array_key_exists('icon', $data)) {
             $iconFile = $request->file('icon');
             $iconPath = Storage::disk('report_uploads')->put('', $iconFile);
             $data['icon'] = $iconPath;
         }
-        else if(array_key_exists('defaultIcon', $data)){
+        else {
             $data['icon'] = $data['defaultIcon'];
         }
-        else $data['icon'] = "";
 
 
         $result = $this->reportRepository->save($data);
