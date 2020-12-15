@@ -1,0 +1,123 @@
+@import './variables';
+@import './sidebar';
+
+
+:root {
+    font-size:16px;
+}
+
+.hidden {
+    display:none;
+}
+
+*, *:before, *:after { 
+    box-sizing: border-box;
+    color:$primary_color;
+}
+
+input {
+    font-size:1rem;
+}
+
+div { 
+    transform: translate3d(0,0,0);
+    backface-visibility: hidden;
+}
+
+
+img, object, embed, video {
+	max-width: 100%;
+}
+
+body,input,button {
+    font-family:"Muli", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight:400;
+}
+
+h1,h2,h3,h4,h5,h6 {
+    font-weight:400;
+    margin:0;
+}
+
+.border-red {
+    border:2px solid rgb(161, 12, 12) !important;
+}
+
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.flex-grow {
+    flex-grow: 1;
+} 
+
+.center-horizontal-vertical {
+    display:flex;
+    justify-content: center;
+    align-items:center;
+}
+
+//Is center-vertical if flow-vertical
+.center-horizontal {
+    display:flex;
+    justify-content:center;
+}
+
+//is center-horizontal if flow-horizontal
+.center-vertical {
+    display:flex;
+    align-items:center;
+}
+
+.flow-horizontal {
+    display:flex;
+    flex-direction: row;
+}
+
+.flow-vertical {
+    display:flex;
+    flex-direction:column;
+}
+
+.align-self-center {
+    align-self:center;
+}
+
+.justify-self-center {
+    justify-self:center;
+}
+
+.align-start {
+    align-items: flex-start;
+}
+.align-center {
+    align-items: center;
+}
+
+.align-end {
+    align-items: flex-end;
+}
+
+.justify-start {
+    justify-content: flex-start;
+}
+.justify-center {
+    justify-content: center;
+}
+
+.justify-end {
+    justify-content: flex-end;
+}
+
+.justify-base {
+    justify-self: baseline;
+}
+
+.align-base {
+    align-self: baseline;
+}
+
+.space-between {
+    justify-content: space-between;
+}

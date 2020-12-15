@@ -1,0 +1,81 @@
+
+
+@font-face {
+    font-family: 'Muli';
+    font-style: normal;
+    font-weight: normal;
+    font-display: swap;
+    src: local('Muli Regular'), url('/fonts/Muli-Regular.woff') format('woff');
+    }
+    
+    
+    @font-face {
+    font-family: 'Muli';
+    font-style: normal;
+    font-weight: normal;
+    font-display: swap;
+    src: local('Muli Italic'), url('/fonts/Muli-Italic.woff') format('woff');
+    }
+    
+    
+    @font-face {
+    font-family: 'Muli';
+    font-style: normal;
+    font-weight: 100,200;
+    font-display: swap;
+    src: local('Muli ExtraLight'), url('/fonts/Muli-ExtraLight.woff') format('woff');
+    }
+    
+    
+    
+    
+    @font-face {
+    font-family: 'Muli';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: local('Muli Light'), url('/fonts/Muli-Light.woff') format('woff');
+    }
+    
+    
+    
+    
+    @font-face {
+    font-family: 'Muli';
+    font-style: normal;
+    font-weight: 500, 600;
+    font-display: swap;
+    src: local('Muli SemiBold'), url('/fonts/Muli-SemiBold.woff') format('woff');
+    }
+    
+    
+    @font-face {
+    font-family: 'Muli';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local('Muli Bold'), url('/fonts/Muli-Bold.woff') format('woff');
+    }
+    
+    
+    
+    @font-face {
+    font-family: 'Muli';
+    font-style: normal;
+    font-weight: 800;
+    font-display: swap;
+    src: local('Muli ExtraBold'), url('/fonts/Muli-ExtraBold.woff') format('woff');
+    }
+    
+    
+    
+    
+    @font-face {
+    font-family: 'Muli';
+    font-style: normal;
+    font-weight: 900;
+    font-display: swap;
+    src: local('Muli Black'), url('/fonts/Muli-Black.woff') format('woff');
+    }
+         
+    
