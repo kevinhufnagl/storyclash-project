@@ -48,7 +48,7 @@ class ReportRepository {
        //
        /**
         * DML
-        * DB::update('update reports set title = ? where id = ?', [$data['title'], $id]);
+        * DB::update('update reports set title = ?, updated_at = ? where id = ?', [$data['title'], Carbon::now(), $id]);
         */
 
         /**
