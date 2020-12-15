@@ -19453,7 +19453,6 @@ var updateContextMenuListeners = function updateContextMenuListeners() {
           else if (e.key === "Enter") {
               //Data used for ajax
               var renameData = {
-                _method: 'put',
                 title: renameInput.value
               };
               updateReport(reportId, renameData);
@@ -19586,6 +19585,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "uploadReport", function() { return uploadReport; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteReport", function() { return deleteReport; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateReport", function() { return updateReport; });
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 /*
     CSRF protection for ajax requests
 */
@@ -19650,6 +19655,10 @@ var deleteReport = function deleteReport(reportId) {
 }; //Updates a report using axios and triggers appropriate events for use in app.js
 
 var updateReport = function updateReport(reportId, data) {
+  //Adding the method to the data being sent so we target the update function in the backend.
+  data = _objectSpread({
+    _method: 'put'
+  }, data);
   window.axios.post("/reports/".concat(reportId), data).then(function (res) {
     //Sending the updated data through the event caught in app.js
     document.dispatchEvent(new CustomEvent('reportUpdateSuccess', {

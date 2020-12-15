@@ -63,6 +63,11 @@ export const deleteReport = (reportId) => {
 
 //Updates a report using axios and triggers appropriate events for use in app.js
 export const updateReport = (reportId, data) => {
+    //Adding the method to the data being sent so we target the update function in the backend.
+    data = {
+        _method: 'put',
+        ...data
+    };
     window.axios.post(`/reports/${reportId}`, data).then(res => {
         //Sending the updated data through the event caught in app.js
         document.dispatchEvent(new CustomEvent('reportUpdateSuccess', {detail: res.data}));

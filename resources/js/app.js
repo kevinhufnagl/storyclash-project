@@ -116,7 +116,6 @@ const updateContextMenuListeners = () => {
                     else if(e.key === "Enter") {
                         //Data used for ajax
                         const renameData = {
-                            _method: 'put',
                             title: renameInput.value
                         };
                         updateReport(reportId, renameData);
