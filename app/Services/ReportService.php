@@ -67,6 +67,10 @@ class ReportService {
             throw new InvalidArgumentException($validator->errors()->first());
         }
 
+        /**
+         * Using transactions here since it may be possible that we update multiple dependent objects as well in the future.
+         * This way rollback is easier
+         */
         DB::beginTransaction();
 
         try {
@@ -82,6 +86,10 @@ class ReportService {
     }
 
     public function delete($id) {
+        /**
+         * Using transactions here since it may be possible that we delete multiple dependent objects as well in the future.
+         * This way rollback is easier
+         */
         DB::beginTransaction();
         try {
             $report = $this->reportRepository->delete($id);
