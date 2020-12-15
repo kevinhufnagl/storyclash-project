@@ -148,6 +148,10 @@
   padding: 8px 26px 8px 18px;
 }
 
+#sidebar .sidebar__content .report-container .report-container__list .report-container__list--item.is-renaming .overlay {
+  display: none;
+}
+
 #sidebar .sidebar__content .report-container .report-container__list .report-container__list--item .overlay {
   position: absolute;
   right: 0;
@@ -160,6 +164,10 @@
 
 #sidebar .sidebar__content .report-container .report-container__list .report-container__list--item:hover {
   background-color: #f0f0f0;
+}
+
+#sidebar .sidebar__content .report-container .report-container__list .report-container__list--item:hover .overlay {
+  background: linear-gradient(90deg, rgba(240, 240, 240, 0) 0%, #f0f0f0 70%, #f0f0f0 100%);
 }
 
 #sidebar .sidebar__content .report-container .report-container__list .report-container__list--item:hover .report__options {

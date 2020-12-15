@@ -89,6 +89,7 @@ const updateContextMenuListeners = () => {
     document.querySelectorAll('.js-rename-report').forEach((element) => {
         element.addEventListener('click', (e) => {
             const report = e.currentTarget.parentNode.parentNode;
+            report.classList.add('is-renaming');
             const reportId = e.currentTarget.getAttribute('data-id');
             const reportTitleElem = report.querySelector('.js-report-title');
             //Check if rename input is already inside, otherwise add it
@@ -111,6 +112,7 @@ const updateContextMenuListeners = () => {
                     if(e.key === "Escape") {
                         renameInput.remove();
                         reportTitleElem.classList.remove('hidden');
+                        report.classList.remove('is-renaming');
                     }
                     //Update the report via ajax
                     else if(e.key === "Enter") {
@@ -121,6 +123,7 @@ const updateContextMenuListeners = () => {
                         updateReport(reportId, renameData);
                         renameInput.remove();
                         reportTitleElem.classList.remove('hidden');
+                        report.classList.remove('is-renaming');
                     }
                 })
     

@@ -134,6 +134,11 @@ $report_icon_size: 32px;
                     @extend .flow-horizontal, .center-vertical;
                     position:relative;
                     padding:$s_1 $p_h + $s_1 $s_1 $p_h;
+                    &.is-renaming {
+                        .overlay {
+                            display:none;
+                        }
+                    }
                     .overlay {
                         position:absolute;
                         right:0;
@@ -145,6 +150,9 @@ $report_icon_size: 32px;
                     }
                     &:hover {
                         background-color: $light_grey_1;
+                        .overlay {
+                            background: linear-gradient(90deg, rgba(240,240,240,0) 0%,rgba(240,240,240,1) 70%, rgba(240,240,240,1) 100%);
+                        }
                         .report__options {
                             opacity:1;
                         }

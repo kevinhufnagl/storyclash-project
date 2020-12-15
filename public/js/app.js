@@ -19432,6 +19432,7 @@ var updateContextMenuListeners = function updateContextMenuListeners() {
   document.querySelectorAll('.js-rename-report').forEach(function (element) {
     element.addEventListener('click', function (e) {
       var report = e.currentTarget.parentNode.parentNode;
+      report.classList.add('is-renaming');
       var reportId = e.currentTarget.getAttribute('data-id');
       var reportTitleElem = report.querySelector('.js-report-title'); //Check if rename input is already inside, otherwise add it
 
@@ -19449,6 +19450,7 @@ var updateContextMenuListeners = function updateContextMenuListeners() {
           if (e.key === "Escape") {
             renameInput.remove();
             reportTitleElem.classList.remove('hidden');
+            report.classList.remove('is-renaming');
           } //Update the report via ajax
           else if (e.key === "Enter") {
               //Data used for ajax
@@ -19458,6 +19460,7 @@ var updateContextMenuListeners = function updateContextMenuListeners() {
               updateReport(reportId, renameData);
               renameInput.remove();
               reportTitleElem.classList.remove('hidden');
+              report.classList.remove('is-renaming');
             }
         }); //Show input inside element
 
