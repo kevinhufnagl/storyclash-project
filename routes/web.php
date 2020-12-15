@@ -23,5 +23,5 @@ Route::get('/', [HomeController::class, 'index']);
  * Since we are not using a specific  view to create reports, we don't need a route there.
  * */
 Route::resource('reports', ReportController::class)->except([
-    'create'
+    'create', 'show', 'edit'
 ]);
