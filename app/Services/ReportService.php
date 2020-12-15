@@ -47,9 +47,10 @@ class ReportService {
             $iconPath = Storage::disk('report_uploads')->put('', $iconFile);
             $data['icon'] = $iconPath;
         }
-        else {
-            $data['icon'] = 'trophy.svg';
+        else if(array_key_exists('defaultIcon', $data)){
+            $data['icon'] = $data['defaultIcon'];
         }
+        else $data['icon'] = "";
 
 
         $result = $this->reportRepository->save($data);

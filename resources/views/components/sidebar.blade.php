@@ -33,6 +33,7 @@
                 </ul>
                 <form name="addReportForm" id="addReportForm" method="post" action="javascript:void(0)" enctype="multipart/form-data">
                     <div class="flow-horizontal center-vertical">
+                        <input type="hidden" name="defaultIcon" id="defaultIcon" value="trophy.svg" />
                         <input name='icon' id='icon' type='file' accept='image/*'/>
                         <label for='icon'>
                             <div id="icon-preview"></div>

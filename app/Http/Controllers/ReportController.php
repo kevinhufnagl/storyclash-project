@@ -55,7 +55,8 @@ class ReportController extends Controller
         try {
             $data = $request->only([
                 'title',
-                'icon'
+                'icon',
+                'defaultIcon'
             ]);
 
             //Store report icon in public folder and set filename as icon in the report data

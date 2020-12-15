@@ -23,6 +23,7 @@ let isUploading = false;
 export const uploadReport = (data) => {
     if(!isUploading) {
         isUploading = true;
+
         window.axios({ 
             method  : 'post', 
             url : '/reports', 
