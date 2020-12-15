@@ -19368,7 +19368,7 @@ var loadIcon = function loadIcon(input) {
     var reader = new FileReader();
 
     reader.onload = function (e) {
-      formIconPreview.classList.remove('border-red');
+      //Removing background placeholder once the preview icon is loaded and setting background-image to the preview image
       formIconPreview.setAttribute('style', 'background-size:cover;background-color:transparent;background-image:url(' + e.target.result + ');');
     };
 
@@ -19431,7 +19431,8 @@ var updateContextMenuListeners = function updateContextMenuListeners() {
 
   document.querySelectorAll('.js-rename-report').forEach(function (element) {
     element.addEventListener('click', function (e) {
-      var report = e.currentTarget.parentNode.parentNode;
+      var report = e.currentTarget.parentNode.parentNode; //Adding a class to target a specific style used while renaming.
+
       report.classList.add('is-renaming');
       var reportId = e.currentTarget.getAttribute('data-id');
       var reportTitleElem = report.querySelector('.js-report-title'); //Check if rename input is already inside, otherwise add it
@@ -19443,14 +19444,19 @@ var updateContextMenuListeners = function updateContextMenuListeners() {
         renameInput.setAttribute('class', 'report__title--rename js-rename-input');
         renameInput.setAttribute('value', reportTitleElem.innerHTML); //Puts the cursor at the end when using focus()
 
-        renameInput.setAttribute('onfocus', 'let value = this.value; this.value = null; this.value=value'); //Add listener for keys in rename input
+        renameInput.setAttribute('onfocus', 'let value = this.value; this.value = null; this.value=value'); //Helper function to hide rename input when finished or cancelled. Used in keydown event below.
+
+        var hideRenameInput = function hideRenameInput() {
+          renameInput.remove();
+          reportTitleElem.classList.remove('hidden');
+          report.classList.remove('is-renaming');
+        }; //Add listener for keys in rename input
+
 
         renameInput.addEventListener('keydown', function (e) {
           //Cancel renaming
           if (e.key === "Escape") {
-            renameInput.remove();
-            reportTitleElem.classList.remove('hidden');
-            report.classList.remove('is-renaming');
+            hideRenameInput();
           } //Update the report via ajax
           else if (e.key === "Enter") {
               //Data used for ajax
@@ -19458,11 +19464,9 @@ var updateContextMenuListeners = function updateContextMenuListeners() {
                 title: renameInput.value
               };
               updateReport(reportId, renameData);
-              renameInput.remove();
-              reportTitleElem.classList.remove('hidden');
-              report.classList.remove('is-renaming');
+              hideRenameInput();
             }
-        }); //Show input inside element
+        }); //Show input inside single report element
 
         report.appendChild(renameInput);
         renameInput.focus(); //Hide the actual title div
