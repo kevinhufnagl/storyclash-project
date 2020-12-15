@@ -19615,6 +19615,7 @@ var getAllReports = function getAllReports(callback) {
 var isUploading = false;
 var uploadReport = function uploadReport(data) {
   if (!isUploading) {
+    //Using isUploading to prevent the data being sent more than once while the request is being processed
     isUploading = true;
     window.axios({
       method: 'post',
@@ -19630,7 +19631,7 @@ var uploadReport = function uploadReport(data) {
       var response = {
         status: error.response.data.status,
         message: error.response.data.message
-      }; //Seperately handling the php upload limit
+      }; //Seperately handling the php upload limit. The 2056kb limit has it's own error message we set in the backend.
 
       console.log(error.response);
 
