@@ -19,8 +19,8 @@
         <div class="report-container js-reports active">
             <div class="report-container__header js-toggle-reports">
                 <h1 class="report-container__title">My Reports</h1>
-                <div class="report-container__toggle js-toggle-reports-icon">
-                    @svg('arrow_down')
+                <div class="report-container__toggle js-toggle-reports-icon active">
+                    @svg('button_arrow')
                 </div>
             </div>
             <div class="report-container__content">

@@ -99,6 +99,11 @@ $report_icon_size: 32px;
                 &:hover {
                     .report-container__toggle {
                         opacity:1;
+                        svg {
+                            .arrow-straight {
+                                transform:scaleX(1);
+                            }
+                        }
                     }
                 }
                 @extend .flow-horizontal, .center-vertical;
@@ -113,11 +118,27 @@ $report_icon_size: 32px;
                     transform:rotate(0deg);
                     cursor: pointer;
                     opacity:0.6;
-                    svg * {
-                        fill:$primary_color;
+                    svg {
+                        width:9px;
+                        height:9px;
+                        position: absolute;
+                        top:50%;
+                        left:50%;
+                        transform:translate(-50%,-50%);
+                        .arrow-straight {
+                            transition:all .3s $ease-custom-1;
+                            transform-origin: 100% 50%;
+                            transform:scaleX(0);
+                        }
+                        * {
+                            fill:$primary_color;
+                        }
                     }
                     &.active {
-                        transform:rotate(-90deg);
+                        transform:rotate(90deg);
+                        .arrow-straight {
+                            transform:scaleX(0) !important;
+                        }
                     }
                 }
             }
