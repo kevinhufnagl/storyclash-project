@@ -35,7 +35,8 @@ class ReportService {
 
         $validator = Validator::make($data, [
             'title' => 'required|max:255',
-            'icon' => 'image|max:2056'
+            'icon' => 'image|max:2056',
+            'defaultIcon' => 'required'
         ]);
 
         if($validator->fails()) {
