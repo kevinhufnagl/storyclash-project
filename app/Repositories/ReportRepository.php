@@ -29,25 +29,31 @@ class ReportRepository {
      */
     public function save($data) {
         /**
+         * DML
+         * DB::insert('insert into reports (title, icon, created_at, updated_at) values (?, ?, ?, ?)',[$data['title'], $data['icon'], Carbon::now(), Carbon::now()]);
+         */
+
+        /**
          * Using Eloquent in Laravel
          */
         $report = $this->report->create([
             'title' => $data['title'],
             'icon' => $data['icon']
         ]);
-
-        /**
-         * Direct SQL Insert statement
-         */
-        /*$report = DB::insert('insert into reports (title, icon, created_at, updated_at) values (?, ?, ?, ?)',
-            [$data['title'], $data['icon'], Carbon::now(), Carbon::now()]
-        );*/
         
         return $report;
     }
 
     public function update($data, $id) {
-       //DB::update('update reports set title = ? where id = ?', [$data['title'], $id]);
+       //
+       /**
+        * DML
+        * DB::update('update reports set title = ? where id = ?', [$data['title'], $id]);
+        */
+
+        /**
+         * Using Eloquent in Laravel
+         */
        $report = $this->report->find($id);
        $report->title = $data['title'];
        $report->update();
@@ -56,8 +62,15 @@ class ReportRepository {
     }
 
     public function delete($id) {
-        //DB::delete('delete from reports where id = ?', [$id]);
 
+        /**
+         * DML
+         * DB::delete('delete from reports where id = ?', [$id]);
+         */
+
+         /**
+         * Using Eloquent in Laravel
+         */
         $report = $this->report->find($id);
         $report->delete();
 
@@ -71,7 +84,14 @@ class ReportRepository {
      * @return Array
      */
     public function getAll() {
-        //return DB::select('select * from reports');
+        /**
+         * DML
+         * DB::select('select * from reports');
+         */
+
+         /**
+         * Using Eloquent in Laravel
+         */
         return $this->report->get();
     }
 
