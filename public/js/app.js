@@ -19355,8 +19355,6 @@ var _require2 = __webpack_require__(/*! ./report */ "./resources/js/report.js"),
 var reportList = document.querySelector('.js-report-list'); //Report form DOM elements
 
 var addReportForm = document.getElementById('addReportForm');
-var formTitle = document.getElementById('title');
-var formIcon = document.getElementById('icon');
 var formIconPreview = document.getElementById('icon-preview');
 var formMessage = document.querySelector('.form-message'); //Loads all reports on page load once and calls function to add event listeners for the context menu of each item
 
@@ -19579,15 +19577,15 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*!********************************!*\
   !*** ./resources/js/report.js ***!
   \********************************/
-/*! exports provided: getAllReports, uploadReport, updateReport, deleteReport */
+/*! exports provided: getAllReports, uploadReport, deleteReport, updateReport */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAllReports", function() { return getAllReports; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "uploadReport", function() { return uploadReport; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateReport", function() { return updateReport; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteReport", function() { return deleteReport; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateReport", function() { return updateReport; });
 /*
     CSRF protection for ajax requests
 */
@@ -19602,9 +19600,7 @@ var getAllReports = function getAllReports(callback) {
   });
 }; //Uploads a report using axios and triggers appropriate events for use in app.js
 
-
 var isUploading = false;
-
 var uploadReport = function uploadReport(data) {
   if (!isUploading) {
     isUploading = true;
@@ -19638,7 +19634,6 @@ var uploadReport = function uploadReport(data) {
   }
 }; //Deletes a report using axios and triggers appropriate events for use in app.js
 
-
 var deleteReport = function deleteReport(reportId) {
   window.axios.post("/reports/".concat(reportId), {
     _method: 'delete'
@@ -19654,7 +19649,6 @@ var deleteReport = function deleteReport(reportId) {
   });
 }; //Updates a report using axios and triggers appropriate events for use in app.js
 
-
 var updateReport = function updateReport(reportId, data) {
   window.axios.post("/reports/".concat(reportId), data).then(function (res) {
     //Sending the updated data through the event caught in app.js
@@ -19666,9 +19660,7 @@ var updateReport = function updateReport(reportId, data) {
       detail: error.response
     }));
   });
-};
-
-
+}; //export {getAllReports, uploadReport, updateReport, deleteReport};
 
 /***/ }),
 

@@ -6,7 +6,7 @@ window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 
 
 //Retrieves all reports and hands it to the callback function for use in app.js
-const getAllReports = (callback) => {
+export const getAllReports = (callback) => {
     window.axios.get('/reports')
     .then(res => {
         callback(res.data);
@@ -20,7 +20,7 @@ const getAllReports = (callback) => {
 
 //Uploads a report using axios and triggers appropriate events for use in app.js
 let isUploading = false;
-const uploadReport = (data) => {
+export const uploadReport = (data) => {
     if(!isUploading) {
         isUploading = true;
         window.axios({ 
@@ -50,7 +50,7 @@ const uploadReport = (data) => {
 }
 
 //Deletes a report using axios and triggers appropriate events for use in app.js
-const deleteReport = (reportId) => {
+export const deleteReport = (reportId) => {
     window.axios.post(`/reports/${reportId}`, {
         _method:'delete'
     }).then(res => {
@@ -62,7 +62,7 @@ const deleteReport = (reportId) => {
 }
 
 //Updates a report using axios and triggers appropriate events for use in app.js
-const updateReport = (reportId, data) => {
+export const updateReport = (reportId, data) => {
     window.axios.post(`/reports/${reportId}`, data).then(res => {
         //Sending the updated data through the event caught in app.js
         document.dispatchEvent(new CustomEvent('reportUpdateSuccess', {detail: res.data}));
@@ -71,4 +71,4 @@ const updateReport = (reportId, data) => {
     })
 }
 
-export {getAllReports, uploadReport, updateReport, deleteReport};
+//export {getAllReports, uploadReport, updateReport, deleteReport};

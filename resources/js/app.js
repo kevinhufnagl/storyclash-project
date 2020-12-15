@@ -1,14 +1,13 @@
 const { update } = require('lodash');
 
 require('./bootstrap');
-const {getAllReports, uploadReport, updateReport, deleteReport} = require('./report');
+
+const {getAllReports, uploadReport,updateReport,deleteReport} = require('./report');
 
 const reportList = document.querySelector('.js-report-list');
 
 //Report form DOM elements
 const addReportForm = document.getElementById('addReportForm');
-const formTitle = document.getElementById('title');
-const formIcon = document.getElementById('icon');
 const formIconPreview = document.getElementById('icon-preview');
 const formMessage = document.querySelector('.form-message');
 
@@ -21,7 +20,7 @@ getAllReports((data) => {
 //Used to preview the selected report icon, not necessary but better UX
 const loadIcon = input => {
     if (input.files && input.files[0]) {
-        var reader = new FileReader();
+        var  reader = new FileReader();
         
         reader.onload = function (e) {
             formIconPreview.classList.remove('border-red');
