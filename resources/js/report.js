@@ -22,8 +22,8 @@ export const getAllReports = (callback) => {
 let isUploading = false;
 export const uploadReport = (data) => {
     if(!isUploading) {
+        //Using isUploading to prevent the data being sent more than once while the request is being processed
         isUploading = true;
-
         window.axios({ 
             method  : 'post', 
             url : '/reports', 
@@ -39,7 +39,7 @@ export const uploadReport = (data) => {
                 status: error.response.data.status,
                 message: error.response.data.message
             }
-            //Seperately handling the php upload limit
+            //Seperately handling the php upload limit. The 2056kb limit has it's own error message we set in the backend.
             console.log(error.response);
             if(error.response.status === 413) {
                 response.message = "Exceeded upload size limit";
