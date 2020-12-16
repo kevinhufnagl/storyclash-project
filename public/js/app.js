@@ -19648,8 +19648,12 @@ var uploadReport = function uploadReport(data) {
 }; //Deletes a report using axios and triggers appropriate events for use in app.js
 
 var deleteReport = function deleteReport(reportId) {
-  window.axios.post("/reports/".concat(reportId), {
-    _method: 'delete'
+  window.axios({
+    method: 'post',
+    url: "/reports/".concat(reportId),
+    data: {
+      _method: 'delete'
+    }
   }).then(function (res) {
     //Sending the deleted report through the event so we can delete it from the DOM in app.js
     document.dispatchEvent(new CustomEvent('reportDeleteSuccess', {
@@ -19667,7 +19671,11 @@ var updateReport = function updateReport(reportId, data) {
   data = _objectSpread({
     _method: 'put'
   }, data);
-  window.axios.post("/reports/".concat(reportId), data).then(function (res) {
+  window.axios({
+    method: 'post',
+    url: "/reports/".concat(reportId),
+    data: data
+  }).then(function (res) {
     //Sending the updated data through the event caught in app.js
     document.dispatchEvent(new CustomEvent('reportUpdateSuccess', {
       detail: res.data

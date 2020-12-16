@@ -52,9 +52,14 @@ export const uploadReport = (data) => {
 
 //Deletes a report using axios and triggers appropriate events for use in app.js
 export const deleteReport = (reportId) => {
-    window.axios.post(`/reports/${reportId}`, {
-        _method:'delete'
-    }).then(res => {
+    window.axios({
+        method:'post',
+        url:`/reports/${reportId}`,
+        data :{
+            _method:'delete'
+        }
+    }
+    ).then(res => {
         //Sending the deleted report through the event so we can delete it from the DOM in app.js
         document.dispatchEvent(new CustomEvent('reportDeleteSuccess', {detail: res.data}));
     }).catch(error => {
@@ -69,7 +74,12 @@ export const updateReport = (reportId, data) => {
         _method: 'put',
         ...data
     };
-    window.axios.post(`/reports/${reportId}`, data).then(res => {
+    window.axios({
+            method:'post',
+            url: `/reports/${reportId}`,
+            data: data
+    }
+    ).then(res => {
         //Sending the updated data through the event caught in app.js
         document.dispatchEvent(new CustomEvent('reportUpdateSuccess', {detail: res.data}));
     }).catch(error => {
