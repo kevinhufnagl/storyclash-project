@@ -58,10 +58,6 @@ $report_icon_size: 32px;
             padding:0 $p_h;
 
             @extend .flow-horizontal, .center-vertical;
-            &svg {
-                width:100%;
-                height:100%;
-            }
             .sidebar__content--header__arrow {
                 width:16px;
                 height:16px;
