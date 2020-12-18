@@ -1,8 +1,8 @@
-const { update } = require('lodash');
+//const { update } = require('lodash');
 
-require('./bootstrap');
+import  './bootstrap';
+import {getAllReports, uploadReport,updateReport,deleteReport} from './report';
 
-const {getAllReports, uploadReport,updateReport,deleteReport} = require('./report');
 
 const reportList = document.querySelector('.js-report-list');
 

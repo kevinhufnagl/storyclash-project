@@ -19338,19 +19338,16 @@ module.exports = function(module) {
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
   \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-var _require = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js"),
-    update = _require.update;
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _bootstrap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+/* harmony import */ var _bootstrap__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_bootstrap__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _report__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./report */ "./resources/js/report.js");
+//const { update } = require('lodash');
 
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
-
-var _require2 = __webpack_require__(/*! ./report */ "./resources/js/report.js"),
-    getAllReports = _require2.getAllReports,
-    uploadReport = _require2.uploadReport,
-    updateReport = _require2.updateReport,
-    deleteReport = _require2.deleteReport;
 
 var reportList = document.querySelector('.js-report-list'); //Report form DOM elements
 
@@ -19359,7 +19356,7 @@ var addReportFormTitle = document.getElementById('title');
 var formIconPreview = document.getElementById('icon-preview');
 var formMessage = document.querySelector('.form-message'); //Loads all reports on page load once and calls function to add event listeners for the context menu of each item
 
-getAllReports(function (data) {
+Object(_report__WEBPACK_IMPORTED_MODULE_1__["getAllReports"])(function (data) {
   reportList.innerHTML = data.html;
   updateContextMenuListeners();
 }); //Used to preview the selected report icon, not necessary but better UX
@@ -19435,7 +19432,7 @@ var updateContextMenuListeners = function updateContextMenuListeners() {
   document.querySelectorAll('.js-delete-report').forEach(function (element) {
     element.addEventListener('click', function (e) {
       var reportId = e.currentTarget.getAttribute('data-id');
-      deleteReport(reportId);
+      Object(_report__WEBPACK_IMPORTED_MODULE_1__["deleteReport"])(reportId);
     });
   });
   /**
@@ -19481,7 +19478,7 @@ var updateContextMenuListeners = function updateContextMenuListeners() {
               var renameData = {
                 title: renameInput.value
               };
-              updateReport(reportId, renameData);
+              Object(_report__WEBPACK_IMPORTED_MODULE_1__["updateReport"])(reportId, renameData);
               hideRenameInput();
             }
         }); //Show input inside single report element
@@ -19529,7 +19526,7 @@ document.getElementById('title').addEventListener('keydown', function (e) {
   } //Submit form data via ajax
   else if (e.key === "Enter") {
       var data = new FormData(addReportForm);
-      uploadReport(data);
+      Object(_report__WEBPACK_IMPORTED_MODULE_1__["uploadReport"])(data);
       addReportForm.classList.add('processing');
     }
 });
