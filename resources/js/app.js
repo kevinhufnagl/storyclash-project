@@ -8,6 +8,7 @@ const reportList = document.querySelector('.js-report-list');
 
 //Report form DOM elements
 const addReportForm = document.getElementById('addReportForm');
+const addReportFormTitle = document.getElementById('title');
 const formIconPreview = document.getElementById('icon-preview');
 const formMessage = document.querySelector('.form-message');
 
@@ -174,7 +175,7 @@ document.getElementById('icon').addEventListener('change', (e) => {
 //Shows the form to add a report on click of Save Report button
 document.querySelector('.js-add-report').addEventListener('click', () => {
     addReportForm.classList.add('active');
-    document.getElementById('title').focus();
+    addReportFormTitle.focus();
 })
 
 
@@ -191,6 +192,7 @@ document.getElementById('title').addEventListener('keydown', function(e){
     else if(e.key === "Enter") {
         let data = new FormData(addReportForm);
         uploadReport(data);
+        addReportForm.classList.add('processing');
     }
 });
 
@@ -204,11 +206,14 @@ document.addEventListener('reportUploadSuccess', (e) => {
     //Converting the returned html string into html code and appending it to the report list
     reportList.append(document.createRange().createContextualFragment(e.detail.html));
     formMessage.innerHTML = "";
+    addReportForm.classList.remove('processing');
     updateContextMenuListeners();
 })
 
 document.addEventListener('reportUploadFail', (e) => {
     formMessage.innerHTML = e.detail.message;
+    addReportForm.classList.remove('processing');
+    addReportFormTitle.focus();
 } )
 
 //Remove deleted report from DOM
@@ -230,4 +235,5 @@ document.addEventListener('reportUpdateSuccess', (e) => {
 
 document.addEventListener('reportUpdateFail', (e) => {
     console.log(e.detail);
+    
 })

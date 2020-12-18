@@ -61,11 +61,6 @@
   padding: 0 18px;
 }
 
-#sidebar .sidebar__content .sidebar__content--headersvg {
-  width: 100%;
-  height: 100%;
-}
-
 #sidebar .sidebar__content .sidebar__content--header .sidebar__content--header__arrow {
   width: 16px;
   height: 16px;
@@ -312,6 +307,11 @@
 
 #addReportForm.active {
   display: block;
+}
+
+#addReportForm.processing {
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 #addReportForm .form-message {

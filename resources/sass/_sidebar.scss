@@ -281,6 +281,10 @@ $report_icon_size: 32px;
     &.active {
         display:block;
     }
+    &.processing {
+        opacity:0.5;
+        pointer-events: none;
+    }
     .form-message {
         font-size:0.8rem;
         color:rgb(180, 10, 10);

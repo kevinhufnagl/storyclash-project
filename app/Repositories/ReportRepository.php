@@ -71,9 +71,19 @@ class ReportRepository {
          /**
          * Using Eloquent in Laravel
          */
+
+
+        /**
+         * Soft delete alternatively
+         */
+        /*
+        $report = $this->report->find($id);
+        $report->deleted_at = Carbon::now();
+        $report->update();
+        */
+
         $report = $this->report->find($id);
         $report->delete();
-
 
         return $report;
     }
@@ -92,6 +102,11 @@ class ReportRepository {
          /**
          * Using Eloquent in Laravel
          */
+
+        /**
+         * Soft delete alternatively
+         */
+        //return $this->report->whereNull('deleted_at')->get();
         return $this->report->get();
     }
 

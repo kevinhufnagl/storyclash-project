@@ -19355,6 +19355,7 @@ var _require2 = __webpack_require__(/*! ./report */ "./resources/js/report.js"),
 var reportList = document.querySelector('.js-report-list'); //Report form DOM elements
 
 var addReportForm = document.getElementById('addReportForm');
+var addReportFormTitle = document.getElementById('title');
 var formIconPreview = document.getElementById('icon-preview');
 var formMessage = document.querySelector('.form-message'); //Loads all reports on page load once and calls function to add event listeners for the context menu of each item
 
@@ -19499,7 +19500,7 @@ document.getElementById('icon').addEventListener('change', function (e) {
 
 document.querySelector('.js-add-report').addEventListener('click', function () {
   addReportForm.classList.add('active');
-  document.getElementById('title').focus();
+  addReportFormTitle.focus();
 }); //Handle form input for adding new report
 
 document.getElementById('title').addEventListener('keydown', function (e) {
@@ -19512,6 +19513,7 @@ document.getElementById('title').addEventListener('keydown', function (e) {
   else if (e.key === "Enter") {
       var data = new FormData(addReportForm);
       uploadReport(data);
+      addReportForm.classList.add('processing');
     }
 }); //Event Listeners for the ajax results in report.js
 //Append uploaded report to DOM
@@ -19522,10 +19524,13 @@ document.addEventListener('reportUploadSuccess', function (e) {
 
   reportList.append(document.createRange().createContextualFragment(e.detail.html));
   formMessage.innerHTML = "";
+  addReportForm.classList.remove('processing');
   updateContextMenuListeners();
 });
 document.addEventListener('reportUploadFail', function (e) {
   formMessage.innerHTML = e.detail.message;
+  addReportForm.classList.remove('processing');
+  addReportFormTitle.focus();
 }); //Remove deleted report from DOM
 
 document.addEventListener('reportDeleteSuccess', function (e) {
