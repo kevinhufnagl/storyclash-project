@@ -37,6 +37,9 @@ const hideReportForm = () => {
     addReportForm.classList.remove('active');
 }
 
+/**
+ * Clearing the content of the add report form
+ */
 const resetReportForm = () => {
     //Emptying form
     addReportForm.reset();
@@ -44,7 +47,10 @@ const resetReportForm = () => {
     document.getElementById('icon-preview').setAttribute('style', '');
 }
 
-//Hide all open report context menus
+/**
+ * Hides all open context menus for reports.
+ * Called when clicking anywhere in the document except the context menu itself.
+ */
 const hideAllContextMenus = () => {
     document.querySelectorAll('.js-report-menu').forEach((element) => {
         element.classList.remove('active');
@@ -60,7 +66,12 @@ document.addEventListener('click', () => {
 
 
 
-//Bind click events of the newly added report items
+
+/**
+ * Bind click events of the newly added report items
+ * Called everytime the report list changes.
+ * On page load and on succesful report upload
+ */
 const updateContextMenuListeners = () => {
 
     //Show context menu for a single report item
@@ -85,6 +96,8 @@ const updateContextMenuListeners = () => {
         })
     });
 
+
+
     /**
      * Renaming a report
      * Handles the click on "Rename" in the context menu for a single report
@@ -92,11 +105,16 @@ const updateContextMenuListeners = () => {
     document.querySelectorAll('.js-rename-report').forEach((element) => {
         element.addEventListener('click', (e) => {
             const report = e.currentTarget.parentNode.parentNode;
-            //Adding a class to target a specific style used while renaming.
+
+            //Adding a class to target a specific style for the report item used while renaming.
             report.classList.add('is-renaming');
             const reportId = e.currentTarget.getAttribute('data-id');
             const reportTitleElem = report.querySelector('.js-report-title');
-            //Check if rename input is already inside, otherwise add it
+
+            /**
+             * Check if rename input is already inside, otherwise add it
+             * This prevents adding infinite amount of inputs when repeatedly clicking on rename
+             */
             if(!report.querySelector('.js-rename-input')) {
 
 
@@ -148,12 +166,12 @@ const updateContextMenuListeners = () => {
 
 
 
-//Toggle sidebar in and out
+//Toggle sidebar in and out when clicking on storyclash icon
 document.querySelector('.js-toggle-sidebar').addEventListener('click', () => {
     document.getElementById('sidebar').classList.toggle('active');
 })
 
-//Hide sidebar in and out
+//Hide sidebar with back button next to the bookmark icon
 document.querySelector('.js-hide-sidebar').addEventListener('click', () => {
     document.getElementById('sidebar').classList.remove('active');
 })
@@ -167,7 +185,7 @@ document.querySelector('.js-toggle-reports').addEventListener('click', () => {
 })
 
 
-//Load preview icon for report after selection
+//Load preview icon for report after selection of image in file browser
 document.getElementById('icon').addEventListener('change', (e) => {
     loadIcon(e.currentTarget);
 })
@@ -197,7 +215,9 @@ document.getElementById('title').addEventListener('keydown', function(e){
 });
 
 
-//Event Listeners for the ajax results in report.js
+/**
+ * Event Listeners for the ajax results in report.js
+ */
 
 //Append uploaded report to DOM
 document.addEventListener('reportUploadSuccess', (e) => {
@@ -213,7 +233,6 @@ document.addEventListener('reportUploadSuccess', (e) => {
 document.addEventListener('reportUploadFail', (e) => {
     formMessage.innerHTML = e.detail.message;
     addReportForm.classList.remove('processing');
-    addReportFormTitle.focus();
 } )
 
 //Remove deleted report from DOM

@@ -19380,13 +19380,21 @@ var loadIcon = function loadIcon(input) {
 var hideReportForm = function hideReportForm() {
   addReportForm.classList.remove('active');
 };
+/**
+ * Clearing the content of the add report form
+ */
+
 
 var resetReportForm = function resetReportForm() {
   //Emptying form
   addReportForm.reset(); //Removing preview icon
 
   document.getElementById('icon-preview').setAttribute('style', '');
-}; //Hide all open report context menus
+};
+/**
+ * Hides all open context menus for reports.
+ * Called when clicking anywhere in the document except the context menu itself.
+ */
 
 
 var hideAllContextMenus = function hideAllContextMenus() {
@@ -19401,7 +19409,12 @@ var hideAllContextMenus = function hideAllContextMenus() {
 
 document.addEventListener('click', function () {
   hideAllContextMenus();
-}); //Bind click events of the newly added report items
+});
+/**
+ * Bind click events of the newly added report items
+ * Called everytime the report list changes.
+ * On page load and on succesful report upload
+ */
 
 var updateContextMenuListeners = function updateContextMenuListeners() {
   //Show context menu for a single report item
@@ -19432,11 +19445,15 @@ var updateContextMenuListeners = function updateContextMenuListeners() {
 
   document.querySelectorAll('.js-rename-report').forEach(function (element) {
     element.addEventListener('click', function (e) {
-      var report = e.currentTarget.parentNode.parentNode; //Adding a class to target a specific style used while renaming.
+      var report = e.currentTarget.parentNode.parentNode; //Adding a class to target a specific style for the report item used while renaming.
 
       report.classList.add('is-renaming');
       var reportId = e.currentTarget.getAttribute('data-id');
-      var reportTitleElem = report.querySelector('.js-report-title'); //Check if rename input is already inside, otherwise add it
+      var reportTitleElem = report.querySelector('.js-report-title');
+      /**
+       * Check if rename input is already inside, otherwise add it
+       * This prevents adding infinite amount of inputs when repeatedly clicking on rename
+       */
 
       if (!report.querySelector('.js-rename-input')) {
         //Create the input to rename the current report
@@ -19476,12 +19493,12 @@ var updateContextMenuListeners = function updateContextMenuListeners() {
       }
     });
   });
-}; //Toggle sidebar in and out
+}; //Toggle sidebar in and out when clicking on storyclash icon
 
 
 document.querySelector('.js-toggle-sidebar').addEventListener('click', function () {
   document.getElementById('sidebar').classList.toggle('active');
-}); //Hide sidebar in and out
+}); //Hide sidebar with back button next to the bookmark icon
 
 document.querySelector('.js-hide-sidebar').addEventListener('click', function () {
   document.getElementById('sidebar').classList.remove('active');
@@ -19492,7 +19509,7 @@ document.querySelector('.js-toggle-reports').addEventListener('click', function 
   makeActive.forEach(function (element) {
     element.classList.toggle('active');
   });
-}); //Load preview icon for report after selection
+}); //Load preview icon for report after selection of image in file browser
 
 document.getElementById('icon').addEventListener('change', function (e) {
   loadIcon(e.currentTarget);
@@ -19515,7 +19532,10 @@ document.getElementById('title').addEventListener('keydown', function (e) {
       uploadReport(data);
       addReportForm.classList.add('processing');
     }
-}); //Event Listeners for the ajax results in report.js
+});
+/**
+ * Event Listeners for the ajax results in report.js
+ */
 //Append uploaded report to DOM
 
 document.addEventListener('reportUploadSuccess', function (e) {
@@ -19530,7 +19550,6 @@ document.addEventListener('reportUploadSuccess', function (e) {
 document.addEventListener('reportUploadFail', function (e) {
   formMessage.innerHTML = e.detail.message;
   addReportForm.classList.remove('processing');
-  addReportFormTitle.focus();
 }); //Remove deleted report from DOM
 
 document.addEventListener('reportDeleteSuccess', function (e) {

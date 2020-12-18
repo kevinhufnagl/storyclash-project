@@ -104,9 +104,10 @@ class ReportRepository {
          */
 
         /**
-         * Soft delete alternatively
+         * Retrieving all reports with soft delete enabled
          */
         //return $this->report->whereNull('deleted_at')->get();
+        
         return $this->report->get();
     }
 
