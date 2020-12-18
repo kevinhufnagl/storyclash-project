@@ -13,7 +13,7 @@ const formIconPreview = document.getElementById('icon-preview');
 const formMessage = document.querySelector('.form-message');
 
 //Loads all reports on page load once and calls function to add event listeners for the context menu of each item
-getAllReports((data) => {
+getAllReports(data => {
     reportList.innerHTML = (data.html);
     updateContextMenuListeners();
 })
@@ -179,7 +179,7 @@ document.querySelector('.js-hide-sidebar').addEventListener('click', () => {
 //Toggle reports visible / invisible
 document.querySelector('.js-toggle-reports').addEventListener('click', () => {
     const makeActive = document.querySelectorAll('.js-toggle-reports-icon, .js-reports');
-    makeActive.forEach((element) => {
+    makeActive.forEach(element => {
         element.classList.toggle('active');
     });
 })
