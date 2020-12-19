@@ -17,6 +17,7 @@ class CreateReportsTable extends Migration
             $table->id();
             $table->string("title");
             $table->string("icon");
+            //$table->dateTime("deleted_at")->nullable();
             $table->timestamps();
         });
     }

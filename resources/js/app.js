@@ -13,10 +13,11 @@ const formIconPreview = document.getElementById('icon-preview');
 const formMessage = document.querySelector('.form-message');
 
 //Loads all reports on page load once and calls function to add event listeners for the context menu of each item
-getAllReports(data => {
-    reportList.innerHTML = (data.html);
+getAllReports.then(data => {
+    reportList.innerHTML = data.html;
     updateContextMenuListeners();
 })
+
 
 //Used to preview the selected report icon, not necessary but better UX
 const loadIcon = input => {
@@ -92,7 +93,14 @@ const updateContextMenuListeners = () => {
     document.querySelectorAll('.js-delete-report').forEach((element) => {
         element.addEventListener('click', (e) => {
             const reportId = e.currentTarget.getAttribute('data-id');
-            deleteReport(reportId);
+            deleteReport(reportId)
+            .then(res => {
+                const deletedId = res.data.id;
+                document.querySelector(`.js-report-list li[data-id="${deletedId}"]`).remove();
+            })
+            .catch(error => {
+                console.log(error);
+            });
         })
     });
 
@@ -147,8 +155,23 @@ const updateContextMenuListeners = () => {
                         const renameData = {
                             title: renameInput.value
                         };
-                        updateReport(reportId, renameData);
-                        hideRenameInput();
+                        updateReport(reportId, renameData)
+                        .then(res => {
+                            const updatedId = res.data.id;
+                            //Setting the new title we retrieved from the response
+                            const updatedDomItem = document.querySelector(`.js-report-list li[data-id="${updatedId}"] .js-report-title`);
+                            if(updatedDomItem) {
+                                updatedDomItem.innerHTML = res.data.title;
+                            }
+
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
+                        .finally(() => {
+                            hideRenameInput();
+                        });
+
                     }
                 })
     
@@ -209,50 +232,25 @@ document.getElementById('title').addEventListener('keydown', function(e){
     //Submit form data via ajax
     else if(e.key === "Enter") {
         let data = new FormData(addReportForm);
-        uploadReport(data);
         addReportForm.classList.add('processing');
+
+        uploadReport(data)
+        .then(res => {
+            hideReportForm();
+            resetReportForm();
+            //Converting the returned html string into html code and appending it to the report list
+            reportList.append(document.createRange().createContextualFragment(res.html));
+            formMessage.innerHTML = "";
+            updateContextMenuListeners();
+        })
+        .catch(error => {
+            formMessage.innerHTML = error.message;
+        })
+        .finally(() => {
+            addReportForm.classList.remove('processing');
+        })
+
     }
 });
 
 
-/**
- * Event Listeners for the ajax results in report.js
- */
-
-//Append uploaded report to DOM
-document.addEventListener('reportUploadSuccess', (e) => {
-    hideReportForm();
-    resetReportForm();
-    //Converting the returned html string into html code and appending it to the report list
-    reportList.append(document.createRange().createContextualFragment(e.detail.html));
-    formMessage.innerHTML = "";
-    addReportForm.classList.remove('processing');
-    updateContextMenuListeners();
-})
-
-document.addEventListener('reportUploadFail', (e) => {
-    formMessage.innerHTML = e.detail.message;
-    addReportForm.classList.remove('processing');
-} )
-
-//Remove deleted report from DOM
-document.addEventListener('reportDeleteSuccess', (e) => {
-    const deletedId = e.detail.data.id;
-    document.querySelector(`.js-report-list li[data-id="${deletedId}"]`).remove();
-})
-
-document.addEventListener('reportDeleteFail', (e) => {
-    console.log(e.detail);
-})
-
-//Change title to updated title of report in DOM
-document.addEventListener('reportUpdateSuccess', (e) => {
-    const updatedId = e.detail.data.id;
-    //Setting the new title we retrieved from the response
-    document.querySelector(`.js-report-list li[data-id="${updatedId}"] .js-report-title`).innerHTML = e.detail.data.title;
-})
-
-document.addEventListener('reportUpdateFail', (e) => {
-    console.log(e.detail);
-    
-})

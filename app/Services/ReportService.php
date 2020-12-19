@@ -28,7 +28,7 @@ class ReportService {
      * Validate data from Controller and hand off to repository for saving.
      *
      * @param  mixed $data
-     * @return void
+     * @return Report
      */
     public function save($data) {
         $request = app(\Illuminate\Http\Request::class);
@@ -57,7 +57,14 @@ class ReportService {
         $result = $this->reportRepository->save($data);
         return $result;
     }
-    
+        
+    /**
+     * Updates a report using ReportRepository
+     *
+     * @param  mixed $data
+     * @param  mixed $id
+     * @return Report
+     */
     public function update($data, $id) {
         $validator = Validator::make($data, [
             'title' => 'min:1|max:255',
@@ -84,7 +91,13 @@ class ReportService {
 
         return $report;
     }
-
+    
+    /**
+     * Deletes a report using ReportRepository
+     *
+     * @param  mixed $id
+     * @return Report
+     */
     public function delete($id) {
         /**
          * Using transactions here since it may be possible that we delete multiple dependent objects as well in the future.

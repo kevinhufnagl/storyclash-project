@@ -19356,7 +19356,7 @@ var addReportFormTitle = document.getElementById('title');
 var formIconPreview = document.getElementById('icon-preview');
 var formMessage = document.querySelector('.form-message'); //Loads all reports on page load once and calls function to add event listeners for the context menu of each item
 
-Object(_report__WEBPACK_IMPORTED_MODULE_1__["getAllReports"])(function (data) {
+_report__WEBPACK_IMPORTED_MODULE_1__["getAllReports"].then(function (data) {
   reportList.innerHTML = data.html;
   updateContextMenuListeners();
 }); //Used to preview the selected report icon, not necessary but better UX
@@ -19432,7 +19432,12 @@ var updateContextMenuListeners = function updateContextMenuListeners() {
   document.querySelectorAll('.js-delete-report').forEach(function (element) {
     element.addEventListener('click', function (e) {
       var reportId = e.currentTarget.getAttribute('data-id');
-      Object(_report__WEBPACK_IMPORTED_MODULE_1__["deleteReport"])(reportId);
+      Object(_report__WEBPACK_IMPORTED_MODULE_1__["deleteReport"])(reportId).then(function (res) {
+        var deletedId = res.data.id;
+        document.querySelector(".js-report-list li[data-id=\"".concat(deletedId, "\"]")).remove();
+      })["catch"](function (error) {
+        console.log(error);
+      });
     });
   });
   /**
@@ -19478,8 +19483,19 @@ var updateContextMenuListeners = function updateContextMenuListeners() {
               var renameData = {
                 title: renameInput.value
               };
-              Object(_report__WEBPACK_IMPORTED_MODULE_1__["updateReport"])(reportId, renameData);
-              hideRenameInput();
+              Object(_report__WEBPACK_IMPORTED_MODULE_1__["updateReport"])(reportId, renameData).then(function (res) {
+                var updatedId = res.data.id; //Setting the new title we retrieved from the response
+
+                var updatedDomItem = document.querySelector(".js-report-list li[data-id=\"".concat(updatedId, "\"] .js-report-title"));
+
+                if (updatedDomItem) {
+                  updatedDomItem.innerHTML = res.data.title;
+                }
+              })["catch"](function (error) {
+                console.log(error);
+              })["finally"](function () {
+                hideRenameInput();
+              });
             }
         }); //Show input inside single report element
 
@@ -19526,44 +19542,20 @@ document.getElementById('title').addEventListener('keydown', function (e) {
   } //Submit form data via ajax
   else if (e.key === "Enter") {
       var data = new FormData(addReportForm);
-      Object(_report__WEBPACK_IMPORTED_MODULE_1__["uploadReport"])(data);
       addReportForm.classList.add('processing');
+      Object(_report__WEBPACK_IMPORTED_MODULE_1__["uploadReport"])(data).then(function (res) {
+        hideReportForm();
+        resetReportForm(); //Converting the returned html string into html code and appending it to the report list
+
+        reportList.append(document.createRange().createContextualFragment(res.html));
+        formMessage.innerHTML = "";
+        updateContextMenuListeners();
+      })["catch"](function (error) {
+        formMessage.innerHTML = error.message;
+      })["finally"](function () {
+        addReportForm.classList.remove('processing');
+      });
     }
-});
-/**
- * Event Listeners for the ajax results in report.js
- */
-//Append uploaded report to DOM
-
-document.addEventListener('reportUploadSuccess', function (e) {
-  hideReportForm();
-  resetReportForm(); //Converting the returned html string into html code and appending it to the report list
-
-  reportList.append(document.createRange().createContextualFragment(e.detail.html));
-  formMessage.innerHTML = "";
-  addReportForm.classList.remove('processing');
-  updateContextMenuListeners();
-});
-document.addEventListener('reportUploadFail', function (e) {
-  formMessage.innerHTML = e.detail.message;
-  addReportForm.classList.remove('processing');
-}); //Remove deleted report from DOM
-
-document.addEventListener('reportDeleteSuccess', function (e) {
-  var deletedId = e.detail.data.id;
-  document.querySelector(".js-report-list li[data-id=\"".concat(deletedId, "\"]")).remove();
-});
-document.addEventListener('reportDeleteFail', function (e) {
-  console.log(e.detail);
-}); //Change title to updated title of report in DOM
-
-document.addEventListener('reportUpdateSuccess', function (e) {
-  var updatedId = e.detail.data.id; //Setting the new title we retrieved from the response
-
-  document.querySelector(".js-report-list li[data-id=\"".concat(updatedId, "\"] .js-report-title")).innerHTML = e.detail.data.title;
-});
-document.addEventListener('reportUpdateFail', function (e) {
-  console.log(e.detail);
 });
 
 /***/ }),
@@ -19613,100 +19605,100 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "uploadReport", function() { return uploadReport; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteReport", function() { return deleteReport; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateReport", function() { return updateReport; });
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+
 /*
     CSRF protection for ajax requests
 */
+
 var token = document.head.querySelector('meta[name="csrf-token"]');
 window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content; //Retrieves all reports and hands it to the callback function for use in app.js
 
-var getAllReports = function getAllReports(callback) {
+var getAllReports = new Promise(function (resolve, reject) {
   window.axios.get('/reports').then(function (res) {
-    callback(res.data);
+    resolve(res.data);
   })["catch"](function (error) {
     console.log(error.response);
+    throw error.response;
   });
-}; //Uploads a report using axios and triggers appropriate events for use in app.js
+}); //Uploads a report using axios and triggers appropriate events for use in app.js
 
 var isUploading = false;
 var uploadReport = function uploadReport(data) {
-  if (!isUploading) {
-    //Using isUploading to prevent the data being sent more than once while the request is being processed
-    isUploading = true;
-    window.axios({
-      method: 'post',
-      url: '/reports',
-      data: data
-    }).then(function (res) {
-      //Sending the uploaded report through the event so we can append it to the DOM in app.js
-      document.dispatchEvent(new CustomEvent('reportUploadSuccess', {
-        detail: res.data
-      }));
-      isUploading = false;
-    })["catch"](function (error) {
-      var response = {
-        status: error.response.data.status,
-        message: error.response.data.message
-      }; //Seperately handling the php upload limit. The 2056kb limit has it's own error message we set in the backend.
+  return new Promise(function (resolve, reject) {
+    if (!isUploading) {
+      //Using isUploading to prevent the data being sent more than once while the request is being processed
+      isUploading = true;
+      window.axios({
+        method: 'post',
+        url: '/reports',
+        data: data
+      }).then(function (res) {
+        //Sending the uploaded report through the event so we can append it to the DOM in app.js
+        //Using promises instead
+        isUploading = false;
+        resolve(res.data);
+      })["catch"](function (error) {
+        var response = {
+          status: error.response.data.status,
+          message: error.response.data.message
+        }; //Seperately handling the php upload limit. The 2056kb limit has it's own error message we set in the backend.
 
-      console.log(error.response);
+        if (error.response.status === 413) {
+          response.message = "Exceeded upload size limit";
+        } //Using promises instead
 
-      if (error.response.status === 413) {
-        response.message = "Exceeded upload size limit";
-      }
 
-      document.dispatchEvent(new CustomEvent('reportUploadFail', {
-        detail: response
-      }));
-      isUploading = false;
-    });
-  }
+        isUploading = false; //reject(response);
+
+        reject(response);
+      });
+    }
+  });
 }; //Deletes a report using axios and triggers appropriate events for use in app.js
 
 var deleteReport = function deleteReport(reportId) {
-  window.axios({
-    method: 'post',
-    url: "/reports/".concat(reportId),
-    data: {
-      _method: 'delete'
-    }
-  }).then(function (res) {
-    //Sending the deleted report through the event so we can delete it from the DOM in app.js
-    document.dispatchEvent(new CustomEvent('reportDeleteSuccess', {
-      detail: res.data
-    }));
-  })["catch"](function (error) {
-    document.dispatchEvent(new CustomEvent('reportDeleteFail', {
-      detail: error.response
-    }));
+  return new Promise(function (resolve, reject) {
+    window.axios({
+      method: 'post',
+      url: "/reports/".concat(reportId),
+      data: {
+        _method: 'delete'
+      }
+    }).then(function (res) {
+      //Sending the deleted report through the event so we can delete it from the DOM in app.js
+      resolve(res.data);
+    })["catch"](function (error) {
+      reject(error.response.data);
+    });
   });
 }; //Updates a report using axios and triggers appropriate events for use in app.js
 
 var updateReport = function updateReport(reportId, data) {
-  //Adding the method to the data being sent so we target the update function in the backend.
-  data = _objectSpread({
-    _method: 'put'
-  }, data);
-  window.axios({
-    method: 'post',
-    url: "/reports/".concat(reportId),
-    data: data
-  }).then(function (res) {
-    //Sending the updated data through the event caught in app.js
-    document.dispatchEvent(new CustomEvent('reportUpdateSuccess', {
-      detail: res.data
-    }));
-  })["catch"](function (error) {
-    document.dispatchEvent(new CustomEvent('reportUpdateFail', {
-      detail: error.response
-    }));
+  return new Promise(function (resolve, reject) {
+    //Adding the method to the data being sent so we target the update function in the backend.
+    data = _objectSpread({
+      _method: 'put'
+    }, data);
+    window.axios({
+      method: 'post',
+      url: "/reports/".concat(reportId),
+      data: data
+    }).then(function (res) {
+      //Sending the updated data through the event caught in app.js
+      resolve(res.data);
+    })["catch"](function (error) {
+      reject(error.response.data);
+    });
   });
-}; //export {getAllReports, uploadReport, updateReport, deleteReport};
+};
 
 /***/ }),
 
