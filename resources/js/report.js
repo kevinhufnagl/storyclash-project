@@ -15,7 +15,7 @@ export const getAllReports = new Promise((resolve,reject) => {
     })
     .catch(error => {
         console.log(error.response);
-        throw error.response;
+        reject(error.response);
     });
 })
 

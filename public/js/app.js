@@ -19626,7 +19626,7 @@ var getAllReports = new Promise(function (resolve, reject) {
     resolve(res.data);
   })["catch"](function (error) {
     console.log(error.response);
-    throw error.response;
+    reject(error.response);
   });
 }); //Uploads a report using axios and triggers appropriate events for use in app.js
 
