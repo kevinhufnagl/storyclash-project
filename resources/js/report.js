@@ -1,4 +1,4 @@
-import { reject } from "lodash";
+
 
 /*
     CSRF protection for ajax requests

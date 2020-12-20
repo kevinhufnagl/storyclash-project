@@ -19,6 +19,8 @@ getAllReports.then(data => {
 })
 
 
+
+
 //Used to preview the selected report icon, not necessary but better UX
 const loadIcon = input => {
     if (input.files && input.files[0]) {
@@ -93,6 +95,7 @@ const updateContextMenuListeners = () => {
     document.querySelectorAll('.js-delete-report').forEach((element) => {
         element.addEventListener('click', (e) => {
             const reportId = e.currentTarget.getAttribute('data-id');
+            
             deleteReport(reportId)
             .then(res => {
                 const deletedId = res.data.id;
