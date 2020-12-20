@@ -1,5 +1,3 @@
-
-
 /*
     CSRF protection for ajax requests
 */
