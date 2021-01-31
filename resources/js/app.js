@@ -12,13 +12,13 @@ const addReportFormTitle = document.getElementById('title');
 const formIconPreview = document.getElementById('icon-preview');
 const formMessage = document.querySelector('.form-message');
 
-//Loads all reports on page load once and calls function to add event listeners for the context menu of each item
+
+
+//Loads all reports on page load once and and adds event listeners for the context menu
 getAllReports.then(data => {
     reportList.innerHTML = data.html;
     updateContextMenuListeners();
 })
-
-
 
 
 //Used to preview the selected report icon, not necessary but better UX

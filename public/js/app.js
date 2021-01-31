@@ -19354,7 +19354,7 @@ var reportList = document.querySelector('.js-report-list'); //Report form DOM el
 var addReportForm = document.getElementById('addReportForm');
 var addReportFormTitle = document.getElementById('title');
 var formIconPreview = document.getElementById('icon-preview');
-var formMessage = document.querySelector('.form-message'); //Loads all reports on page load once and calls function to add event listeners for the context menu of each item
+var formMessage = document.querySelector('.form-message'); //Loads all reports on page load once and and adds event listeners for the context menu
 
 _report__WEBPACK_IMPORTED_MODULE_1__["getAllReports"].then(function (data) {
   reportList.innerHTML = data.html;
@@ -19716,9 +19716,9 @@ var updateReport = function updateReport(reportId, data) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/kevinhufnagl/Google Drive/web_development/Lightisol/LightisolReact/storyclash-project/resources/js/app.js */"./resources/js/app.js");
-__webpack_require__(/*! /Users/kevinhufnagl/Google Drive/web_development/Lightisol/LightisolReact/storyclash-project/resources/sass/app.scss */"./resources/sass/app.scss");
-module.exports = __webpack_require__(/*! /Users/kevinhufnagl/Google Drive/web_development/Lightisol/LightisolReact/storyclash-project/resources/css/fonts.css */"./resources/css/fonts.css");
+__webpack_require__(/*! /Users/kevinhufnagl/Documents/web_development/Lightisol/LightisolReact/storyclash-project/resources/js/app.js */"./resources/js/app.js");
+__webpack_require__(/*! /Users/kevinhufnagl/Documents/web_development/Lightisol/LightisolReact/storyclash-project/resources/sass/app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! /Users/kevinhufnagl/Documents/web_development/Lightisol/LightisolReact/storyclash-project/resources/css/fonts.css */"./resources/css/fonts.css");
 
 
 /***/ })
