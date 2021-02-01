@@ -21,7 +21,7 @@ Route::get('/', [HomeController::class, 'index']);
  * Automatically creates routes for all functions in the ReportController
  * index,create,store, show, edit, update, destroy
  * Since we are not using a specific  view to create reports, we don't need a route there.
- *
+ * Test
  * */
 Route::resource('reports', ReportController::class)->except([
     'create', 'show', 'edit'
